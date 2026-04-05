@@ -278,9 +278,6 @@ export default function AuditForm() {
                       onSubmit={handleSubmit}
                       className="space-y-5"
                       name="audit-form"
-                      method="POST"
-                      data-netlify="true"
-                      data-netlify-honeypot="bot-field"
                     >
                       <input type="hidden" name="form-name" value="audit-form" />
                       <input type="hidden" name="bot-field" />
