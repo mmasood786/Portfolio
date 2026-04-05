@@ -14,6 +14,7 @@ import {
   AlertCircle,
   MessageCircle,
 } from "lucide-react";
+import ThankYouPopup from "./ThankYouPopup";
 
 // Simple feature list in plain language
 const FEATURES = [
@@ -61,6 +62,7 @@ export default function ProjectBriefForm() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [showThankYouPopup, setShowThankYouPopup] = useState(false);
   const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
@@ -167,6 +169,7 @@ export default function ProjectBriefForm() {
       }
 
       setIsSubmitted(true);
+      setShowThankYouPopup(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -225,6 +228,7 @@ export default function ProjectBriefForm() {
   }
 
   return (
+    <>
     <div>
       {/* Progress bar */}
       <div className="mb-8">
@@ -630,5 +634,19 @@ export default function ProjectBriefForm() {
         </button>
       </div>
     </div>
+
+    {/* Thank You Popup */}
+    <ThankYouPopup
+      isOpen={showThankYouPopup}
+      onClose={() => setShowThankYouPopup(false)}
+      name={formData.contactName}
+      message="Your project brief has been received! I'll review everything and send you a personalized proposal with pricing and timeline within 24 hours."
+      steps={[
+        { step: "1", text: "I review your project requirements" },
+        { step: "2", text: "I prepare a custom proposal with pricing" },
+        { step: "3", text: "I email your proposal within 24 hours" },
+      ]}
+    />
+    </>
   );
 }

@@ -7,10 +7,11 @@ interface ThankYouPopupProps {
   isOpen: boolean;
   onClose: () => void;
   name: string;
-  formType: "audit" | "project";
+  message: string;
+  steps: { step: string; text: string }[];
 }
 
-export default function ThankYouPopup({ isOpen, onClose, name, formType }: ThankYouPopupProps) {
+export default function ThankYouPopup({ isOpen, onClose, name, message, steps }: ThankYouPopupProps) {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -78,9 +79,7 @@ export default function ThankYouPopup({ isOpen, onClose, name, formType }: Thank
                   transition={{ delay: 0.4 }}
                   className="text-surface-400 text-center mb-8"
                 >
-                  {formType === "audit"
-                    ? "I'll review your website and send you a detailed audit report within 24 hours."
-                    : "I'll review your project brief and send you a personalized proposal within 24 hours."}
+                  {message}
                 </motion.p>
 
                 {/* What happens next */}
@@ -92,20 +91,7 @@ export default function ThankYouPopup({ isOpen, onClose, name, formType }: Thank
                 >
                   <h3 className="text-white font-bold mb-4">What happens next?</h3>
                   <div className="space-y-4">
-                    {[
-                      {
-                        step: "1",
-                        text: formType === "audit" ? "I analyze your website" : "I review your requirements",
-                      },
-                      {
-                        step: "2",
-                        text: "I prepare a detailed report/proposal for you",
-                      },
-                      {
-                        step: "3",
-                        text: "I email you within 24 hours with next steps",
-                      },
-                    ].map((item) => (
+                    {steps.map((item) => (
                       <div key={item.step} className="flex items-start gap-4">
                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-neon-cyan to-primary-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
                           {item.step}
