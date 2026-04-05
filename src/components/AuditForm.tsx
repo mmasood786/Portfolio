@@ -4,10 +4,7 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { Search, CheckCircle, AlertCircle, Loader2, Sparkles, Tag } from "lucide-react";
-<<<<<<< HEAD
-=======
 import ThankYouPopup from "./ThankYouPopup";
->>>>>>> 9746ec8 (add a netlify form functionality)
 
 const offers = {
   "from-scratch": {
@@ -28,10 +25,7 @@ export default function AuditForm() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [selectedOffer, setSelectedOffer] = useState<string | null>(null);
-<<<<<<< HEAD
-=======
   const [showThankYouPopup, setShowThankYouPopup] = useState(false);
->>>>>>> 9746ec8 (add a netlify form functionality)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -66,17 +60,7 @@ export default function AuditForm() {
     setError("");
 
     try {
-<<<<<<< HEAD
-      const response = await fetch("/api/audit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...formData,
-          selectedOffer: selectedOffer ? offers[selectedOffer as keyof typeof offers].name : null,
-        }),
-=======
-      // Encode form data for Netlify Forms
-      const formDataObj = new FormData();
+      const formDataObj = new URLSearchParams();
       formDataObj.append("form-name", "audit-form");
       formDataObj.append("name", formData.name);
       formDataObj.append("email", formData.email);
@@ -87,25 +71,18 @@ export default function AuditForm() {
         formDataObj.append("selected_offer", offers[selectedOffer as keyof typeof offers].name);
       }
 
-      // Submit to Netlify Forms
       const response = await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(formDataObj as any).toString(),
->>>>>>> 9746ec8 (add a netlify form functionality)
+        body: formDataObj.toString(),
       });
 
       if (!response.ok) {
         throw new Error("Something went wrong. Please try again.");
       }
 
-<<<<<<< HEAD
-      setIsSubmitted(true);
-=======
-      // Show thank you popup
       setIsSubmitted(true);
       setShowThankYouPopup(true);
->>>>>>> 9746ec8 (add a netlify form functionality)
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -114,10 +91,7 @@ export default function AuditForm() {
   };
 
   return (
-<<<<<<< HEAD
-=======
     <>
->>>>>>> 9746ec8 (add a netlify form functionality)
     <section
       id="audit"
       className="py-32 bg-surface-950 relative"
@@ -210,7 +184,7 @@ export default function AuditForm() {
               <div className="absolute inset-0 bg-gradient-to-r from-neon-cyan via-primary-500 to-accent-500 opacity-50 animate-gradient bg-[length:200%_auto]" style={{ padding: "2px" }}>
                 <div className="w-full h-full bg-surface-900 rounded-3xl" />
               </div>
-              
+
               <div className="relative bg-surface-900/95 backdrop-blur-xl p-8 md:p-10 m-[2px] rounded-3xl">
                 {isSubmitted ? (
                   <motion.div
@@ -240,7 +214,7 @@ export default function AuditForm() {
                     )}
                     <div className="bg-primary-500/10 border border-primary-500/20 rounded-xl p-4">
                       <p className="text-primary-400 font-medium">
-                        While you wait, think about what you'd most like to improve 
+                        While you wait, think about what you'd most like to improve
                         about your online presence.
                       </p>
                     </div>
@@ -304,9 +278,6 @@ export default function AuditForm() {
                       </div>
                     )}
 
-<<<<<<< HEAD
-                    <form onSubmit={handleSubmit} className="space-y-5">
-=======
                     <form
                       onSubmit={handleSubmit}
                       className="space-y-5"
@@ -314,13 +285,9 @@ export default function AuditForm() {
                       method="POST"
                       data-netlify="true"
                       data-netlify-honeypot="bot-field"
-                      action="/success"
                     >
-                      {/* Hidden field for Netlify Forms */}
                       <input type="hidden" name="form-name" value="audit-form" />
                       <input type="hidden" name="bot-field" />
-
->>>>>>> 9746ec8 (add a netlify form functionality)
                       <div>
                         <label className="block text-surface-300 font-medium mb-2">
                           Your Name *
@@ -433,8 +400,6 @@ export default function AuditForm() {
         </div>
       </div>
     </section>
-<<<<<<< HEAD
-=======
 
     {/* Thank You Popup */}
     <ThankYouPopup
@@ -444,6 +409,5 @@ export default function AuditForm() {
       formType="audit"
     />
     </>
->>>>>>> 9746ec8 (add a netlify form functionality)
   );
 }

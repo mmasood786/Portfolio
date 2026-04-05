@@ -19,19 +19,12 @@ const navLinks = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-<<<<<<< HEAD
-=======
+
   const [isMounted, setIsMounted] = useState(false);
->>>>>>> 9746ec8 (add a netlify form functionality)
   const pathname = usePathname();
   const isHomePage = pathname === "/";
 
   useEffect(() => {
-<<<<<<< HEAD
-=======
-    setIsMounted(true);
-    
->>>>>>> 9746ec8 (add a netlify form functionality)
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };

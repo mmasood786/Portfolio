@@ -14,10 +14,7 @@ import {
   AlertCircle,
   MessageCircle,
 } from "lucide-react";
-<<<<<<< HEAD
-=======
 import ThankYouPopup from "./ThankYouPopup";
->>>>>>> 9746ec8 (add a netlify form functionality)
 
 // Simple feature list in plain language
 const FEATURES = [
@@ -65,10 +62,7 @@ export default function ProjectBriefForm() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-<<<<<<< HEAD
-=======
   const [showThankYouPopup, setShowThankYouPopup] = useState(false);
->>>>>>> 9746ec8 (add a netlify form functionality)
   const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
@@ -146,36 +140,6 @@ export default function ProjectBriefForm() {
     setError("");
 
     try {
-<<<<<<< HEAD
-      const response = await fetch("/api/project-brief", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          businessName: formData.businessName,
-          industry: formData.industry,
-          currentWebsite: formData.currentWebsite,
-          contactName: formData.contactName,
-          contactEmail: formData.contactEmail,
-          contactPhone: "",
-          projectType: formData.projectType,
-          currentIssues: "",
-          competitorWebsites: formData.exampleWebsites,
-          features: formData.features,
-          integrations: formData.existingTools,
-          exampleWebsites: formData.exampleWebsites,
-          brandColors: "",
-          hasLogo: false,
-          stylePreference: formData.stylePreference,
-          contentReady: formData.hasContent,
-          hasProfessionalPhotos: false,
-          budgetRange: formData.budgetRange,
-          desiredLaunchDate: formData.desiredLaunchDate || null,
-          hasDeadline: !!formData.deadline,
-          deadlineDetails: formData.deadline,
-          additionalNotes: formData.notes,
-        }),
-=======
-      // Prepare form data for Netlify Forms
       const formDataObj = new URLSearchParams();
       formDataObj.append("form-name", "project-brief-form");
       formDataObj.append("business_name", formData.businessName);
@@ -194,26 +158,18 @@ export default function ProjectBriefForm() {
       formDataObj.append("deadline", formData.deadline || "");
       formDataObj.append("notes", formData.notes || "");
 
-      // Submit to Netlify Forms
       const response = await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: formDataObj.toString(),
->>>>>>> 9746ec8 (add a netlify form functionality)
       });
 
       if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "Something went wrong");
+        throw new Error("Something went wrong");
       }
 
-<<<<<<< HEAD
-      setIsSubmitted(true);
-=======
-      // Show thank you popup
       setIsSubmitted(true);
       setShowThankYouPopup(true);
->>>>>>> 9746ec8 (add a netlify form functionality)
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -246,7 +202,7 @@ export default function ProjectBriefForm() {
           Got It, {formData.contactName.split(" ")[0]}! 🎉
         </h3>
         <p className="text-surface-400 text-lg max-w-xl mx-auto mb-8">
-          I'll review everything and send you a personalized proposal within 24 hours. 
+          I'll review everything and send you a personalized proposal within 24 hours.
           No pressure, no obligation — just a clear plan for your new website.
         </p>
         <div className="bg-card-gradient rounded-2xl border border-surface-700/50 p-6 max-w-md mx-auto text-left">
@@ -272,9 +228,6 @@ export default function ProjectBriefForm() {
   }
 
   return (
-<<<<<<< HEAD
-    <div>
-=======
     <>
     <div>
       {/* Hidden Netlify Form Declaration */}
@@ -286,7 +239,6 @@ export default function ProjectBriefForm() {
         <textarea name="notes" />
       </form>
 
->>>>>>> 9746ec8 (add a netlify form functionality)
       {/* Progress bar */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-3">
@@ -691,8 +643,6 @@ export default function ProjectBriefForm() {
         </button>
       </div>
     </div>
-<<<<<<< HEAD
-=======
 
     {/* Thank You Popup */}
     <ThankYouPopup
@@ -702,6 +652,5 @@ export default function ProjectBriefForm() {
       formType="project"
     />
     </>
->>>>>>> 9746ec8 (add a netlify form functionality)
   );
 }

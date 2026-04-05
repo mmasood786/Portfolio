@@ -1,46 +1,33 @@
 "use client";
 
 import { useState, useEffect } from "react";
-<<<<<<< HEAD
 import { motion, AnimatePresence } from "framer-motion";
-=======
-import { motion } from "framer-motion";
->>>>>>> 9746ec8 (add a netlify form functionality)
 import { X, Sparkles, Clock, ArrowRight } from "lucide-react";
 
 export default function TopBanner() {
   const [isVisible, setIsVisible] = useState(false);
-<<<<<<< HEAD
-  const [isDismissed, setIsDismissed] = useState(false);
 
   useEffect(() => {
-    // Check if user dismissed the banner
-    const dismissed = localStorage.getItem("banner-dismissed");
-    if (!dismissed) {
+    const dismissedAt = localStorage.getItem("banner-dismissed");
+    if (dismissedAt) {
+      const elapsed = Date.now() - parseInt(dismissedAt, 10);
+      const sixtyMinutes = 60 * 60 * 1000;
+      if (elapsed >= sixtyMinutes) {
+        localStorage.removeItem("banner-dismissed");
+        setIsVisible(true);
+      }
+    } else {
       setIsVisible(true);
     }
-=======
-
-  useEffect(() => {
-    // Show banner after mount (avoids hydration mismatch)
-    setIsVisible(true);
->>>>>>> 9746ec8 (add a netlify form functionality)
   }, []);
 
   const handleDismiss = () => {
     setIsVisible(false);
-<<<<<<< HEAD
-    setIsDismissed(true);
-    localStorage.setItem("banner-dismissed", "true");
-    // Show again after 24 hours
-    setTimeout(() => {
-      localStorage.removeItem("banner-dismissed");
-      setIsDismissed(false);
-      setIsVisible(true);
-    }, 24 * 60 * 60 * 1000);
+    const dismissTime = Date.now();
+    localStorage.setItem("banner-dismissed", dismissTime.toString());
   };
 
-  if (isDismissed || !isVisible) return null;
+  if (!isVisible) return null;
 
   return (
     <motion.div
@@ -50,25 +37,6 @@ export default function TopBanner() {
       exit={{ y: -100, opacity: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
       className="relative z-50"
-=======
-    // Show again after 1 hour
-    setTimeout(() => {
-      setIsVisible(true);
-    }, 60 * 60 * 1000);
-  };
-
-  // Always render the element but hide it with CSS initially
-  return (
-    <motion.div
-      id="top-banner"
-      initial={false}
-      animate={{ 
-        height: isVisible ? "auto" : 0,
-        opacity: isVisible ? 1 : 0 
-      }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
-      className="relative z-[60] overflow-hidden"
->>>>>>> 9746ec8 (add a netlify form functionality)
     >
       {/* Main Banner - Optimized for mobile */}
       <div className="bg-gradient-to-r from-primary-600 via-primary-500 to-accent-500 relative overflow-hidden">

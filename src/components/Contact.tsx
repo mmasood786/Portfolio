@@ -2,22 +2,13 @@
 
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-<<<<<<< HEAD
-import { useRef } from "react";
-import { Mail, MessageCircle, Clock, MapPin, Send, Phone } from "lucide-react";
-=======
 import { useRef, useState } from "react";
-import { Mail, MessageCircle, Clock, MapPin, Send, Phone, CheckCircle, Loader2 } from "lucide-react";
+import { Mail, MessageCircle, Clock, MapPin, Send, Loader2 } from "lucide-react";
 import ThankYouPopup from "./ThankYouPopup";
->>>>>>> 9746ec8 (add a netlify form functionality)
 
 export default function Contact() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-<<<<<<< HEAD
-
-  return (
-=======
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showThankYouPopup, setShowThankYouPopup] = useState(false);
@@ -32,21 +23,18 @@ export default function Contact() {
     setIsSubmitting(true);
 
     try {
-      // Encode form data for Netlify Forms
       const formDataObj = new URLSearchParams();
       formDataObj.append("form-name", "contact-form");
       formDataObj.append("name", formData.name);
       formDataObj.append("email", formData.email);
       formDataObj.append("message", formData.message);
 
-      // Submit to Netlify Forms
       await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: formDataObj.toString(),
       });
 
-      // Show thank you popup
       setIsSubmitted(true);
       setShowThankYouPopup(true);
       setFormData({ name: "", email: "", message: "" });
@@ -59,7 +47,6 @@ export default function Contact() {
 
   return (
     <>
->>>>>>> 9746ec8 (add a netlify form functionality)
     <section id="contact" className="py-32 bg-surface-950 relative" ref={ref}>
       {/* Background glow */}
       <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-gradient-to-tl from-primary-600/10 to-transparent rounded-full blur-[140px]" />
@@ -80,7 +67,7 @@ export default function Contact() {
             <span className="text-gradient">Your Website</span>
           </h2>
           <p className="text-xl text-surface-400 max-w-3xl mx-auto">
-            Have a question? Want to discuss your project? I'd love to hear from you. 
+            Have a question? Want to discuss your project? I'd love to hear from you.
             No pressure, no hard sell—just a friendly conversation.
           </p>
         </motion.div>
@@ -149,7 +136,7 @@ export default function Contact() {
                   Response Time
                 </h3>
                 <p className="text-surface-300">
-                  I typically respond within a few hours during business hours 
+                  I typically respond within a few hours during business hours
                   (9 AM - 6 PM, Monday to Saturday)
                 </p>
               </div>
@@ -165,7 +152,7 @@ export default function Contact() {
                   Serving Local Businesses
                 </h3>
                 <p className="text-surface-300">
-                  I work with businesses in the local area and can meet in person 
+                  I work with businesses in the local area and can meet in person
                   if needed. Remote work is also available.
                 </p>
               </div>
@@ -184,17 +171,10 @@ export default function Contact() {
                   Prefer I reach out to you?
                 </h3>
                 <p className="text-surface-400 mb-8">
-                  Drop your email and a brief message. I'll get back to you with 
+                  Drop your email and a brief message. I'll get back to you with
                   personalized suggestions for your website.
                 </p>
 
-<<<<<<< HEAD
-                <form className="space-y-5">
-                  <div>
-                    <input
-                      type="text"
-                      placeholder="Your Name"
-=======
                 <form
                   onSubmit={handleSubmit}
                   className="space-y-5"
@@ -202,12 +182,9 @@ export default function Contact() {
                   method="POST"
                   data-netlify="true"
                   data-netlify-honeypot="bot-field"
-                  action="/success"
                 >
-                  {/* Hidden field for Netlify Forms */}
                   <input type="hidden" name="form-name" value="contact-form" />
                   <input type="hidden" name="bot-field" />
-
                   <div>
                     <input
                       type="text"
@@ -216,50 +193,32 @@ export default function Contact() {
                       onChange={handleChange}
                       placeholder="Your Name"
                       required
->>>>>>> 9746ec8 (add a netlify form functionality)
                       className="w-full px-5 py-4 rounded-xl bg-surface-800/50 border border-surface-700 placeholder-surface-500 text-white focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
                     />
                   </div>
                   <div>
                     <input
                       type="email"
-<<<<<<< HEAD
-                      placeholder="Your Email"
-=======
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="Your Email"
                       required
->>>>>>> 9746ec8 (add a netlify form functionality)
                       className="w-full px-5 py-4 rounded-xl bg-surface-800/50 border border-surface-700 placeholder-surface-500 text-white focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
                     />
                   </div>
                   <div>
                     <textarea
-<<<<<<< HEAD
-                      placeholder="Tell me about your website or what you need help with..."
-                      rows={4}
-=======
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
                       placeholder="Tell me about your website or what you need help with..."
                       rows={4}
                       required
->>>>>>> 9746ec8 (add a netlify form functionality)
                       className="w-full px-5 py-4 rounded-xl bg-surface-800/50 border border-surface-700 placeholder-surface-500 text-white focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all resize-none"
                     />
                   </div>
                   <motion.button
-<<<<<<< HEAD
-                    type="button"
-                    className="w-full btn-accent flex items-center justify-center gap-2"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Send Message <Send size={20} />
-=======
                     type="submit"
                     disabled={isSubmitting}
                     className="w-full btn-accent flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
@@ -276,7 +235,6 @@ export default function Contact() {
                         Send Message <Send size={20} />
                       </>
                     )}
->>>>>>> 9746ec8 (add a netlify form functionality)
                   </motion.button>
                 </form>
 
@@ -295,8 +253,6 @@ export default function Contact() {
         </div>
       </div>
     </section>
-<<<<<<< HEAD
-=======
 
     {/* Thank You Popup */}
     <ThankYouPopup
@@ -306,6 +262,5 @@ export default function Contact() {
       formType="audit"
     />
     </>
->>>>>>> 9746ec8 (add a netlify form functionality)
   );
 }

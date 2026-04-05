@@ -17,10 +17,7 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-<<<<<<< HEAD
-=======
     "@netlify/plugin-nextjs": "^5.15.9",
->>>>>>> 9746ec8 (add a netlify form functionality)
     "@types/node": "^22.1.0",
     "@types/pg": "^8.20.0",
     "@types/react": "^18.3.3",
