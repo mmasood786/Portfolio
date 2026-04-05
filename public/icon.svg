@@ -1,0 +1,23 @@
+<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="60" cy="60" r="58" fill="url(#icon-gradient)"/>
+  
+  <!-- Code brackets -->
+  <path d="M42 72L30 60L42 48" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M78 72L90 60L78 48" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Center slash -->
+  <path d="M66 42L54 78" stroke="#22d3ee" stroke-width="4" stroke-linecap="round"/>
+  
+  <!-- Accent dots -->
+  <circle cx="84" cy="36" r="4" fill="#d946ef"/>
+  <circle cx="36" cy="84" r="3" fill="#22d3ee" opacity="0.6"/>
+  
+  <defs>
+    <linearGradient id="icon-gradient" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0f172a"/>
+      <stop offset="0.5" stop-color="#164e63"/>
+      <stop offset="1" stop-color="#1e293b"/>
+    </linearGradient>
+  </defs>
+</svg>
