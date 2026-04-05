@@ -137,10 +137,8 @@ export default function TopBanner() {
 // Lightweight countdown timer (only shows days)
 function CountdownTimer() {
   const [daysLeft, setDaysLeft] = useState(0);
-  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
     const calculateDaysLeft = () => {
       const now = new Date();
       const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
@@ -153,5 +151,5 @@ function CountdownTimer() {
     return () => clearInterval(interval);
   }, []);
 
-  return <span className="font-bold">{isMounted ? daysLeft : "--"}</span>;
+  return <span className="font-bold">{daysLeft} days left</span>;
 }
