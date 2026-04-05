@@ -3,18 +3,15 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  CheckCircle,
   ArrowRight,
   ArrowLeft,
   Building2,
   Sparkles,
   Palette,
   DollarSign,
-  Loader2,
   AlertCircle,
   MessageCircle,
 } from "lucide-react";
-import ThankYouPopup from "./ThankYouPopup";
 
 // Simple feature list in plain language
 const FEATURES = [
@@ -60,9 +57,6 @@ const STEPS = [
 
 export default function ProjectBriefForm() {
   const [currentStep, setCurrentStep] = useState(0);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [showThankYouPopup, setShowThankYouPopup] = useState(false);
   const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
@@ -135,52 +129,11 @@ export default function ProjectBriefForm() {
     }
   };
 
-  const handleSubmit = async () => {
-    setIsSubmitting(true);
-    setError("");
-
-    try {
-      const formDataObj = new URLSearchParams();
-      formDataObj.append("form-name", "project-brief-form");
-      formDataObj.append("business_name", formData.businessName);
-      formDataObj.append("industry", formData.industry);
-      formDataObj.append("current_website", formData.currentWebsite || "");
-      formDataObj.append("contact_name", formData.contactName);
-      formDataObj.append("contact_email", formData.contactEmail);
-      formDataObj.append("project_type", formData.projectType);
-      formDataObj.append("features", formData.features.join(", "));
-      formDataObj.append("existing_tools", formData.existingTools.join(", "));
-      formDataObj.append("example_websites", formData.exampleWebsites || "");
-      formDataObj.append("style_preference", formData.stylePreference || "");
-      formDataObj.append("content_ready", formData.hasContent || "");
-      formDataObj.append("budget_range", formData.budgetRange);
-      formDataObj.append("desired_launch_date", formData.desiredLaunchDate || "");
-      formDataObj.append("deadline", formData.deadline || "");
-      formDataObj.append("notes", formData.notes || "");
-
-      const response = await fetch("/", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: formDataObj.toString(),
-      });
-
-      if (!response.ok) {
-        throw new Error("Something went wrong");
-      }
-
-      setIsSubmitted(true);
-      setShowThankYouPopup(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   const handleNext = () => {
     if (!validateStep()) return;
     if (currentStep === STEPS.length - 1) {
-      handleSubmit();
+      const form = document.getElementById("project-brief-form") as HTMLFormElement;
+      if (form) form.submit();
     } else {
       nextStep();
     }
@@ -188,48 +141,29 @@ export default function ProjectBriefForm() {
 
   const progress = ((currentStep + 1) / STEPS.length) * 100;
 
-  if (isSubmitted) {
-    return (
-      <motion.div
-        className="text-center py-16"
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-      >
-        <div className="w-24 h-24 rounded-full bg-neon-lime/10 flex items-center justify-center mx-auto mb-8">
-          <CheckCircle className="text-neon-lime" size={48} />
-        </div>
-        <h3 className="text-3xl font-bold text-white mb-4">
-          Got It, {formData.contactName.split(" ")[0]}! 🎉
-        </h3>
-        <p className="text-surface-400 text-lg max-w-xl mx-auto mb-8">
-          I'll review everything and send you a personalized proposal within 24 hours.
-          No pressure, no obligation — just a clear plan for your new website.
-        </p>
-        <div className="bg-card-gradient rounded-2xl border border-surface-700/50 p-6 max-w-md mx-auto text-left">
-          <h4 className="text-white font-semibold mb-4">What happens next?</h4>
-          <div className="space-y-4">
-            {[
-              { step: "1", text: "I review your requirements" },
-              { step: "2", text: "I prepare a proposal with pricing & timeline" },
-              { step: "3", text: "I email it to you — no strings attached" },
-              { step: "4", text: "We chat if you want to move forward" },
-            ].map((item) => (
-              <div key={item.step} className="flex items-center gap-4">
-                <div className="w-8 h-8 rounded-full bg-primary-500/20 flex items-center justify-center flex-shrink-0">
-                  <span className="text-primary-400 font-bold text-sm">{item.step}</span>
-                </div>
-                <span className="text-surface-300">{item.text}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </motion.div>
-    );
-  }
-
   return (
-    <>
     <div>
+      {/* Hidden form for Netlify detection */}
+      <form id="project-brief-form" name="project-brief-form" method="POST" action="/success?form=project" className="hidden" data-netlify="true" data-netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="project-brief-form" />
+        <input type="hidden" name="bot-field" />
+        <input type="text" name="business_name" value={formData.businessName} readOnly />
+        <input type="text" name="industry" value={formData.industry} readOnly />
+        <input type="url" name="current_website" value={formData.currentWebsite} readOnly />
+        <input type="text" name="contact_name" value={formData.contactName} readOnly />
+        <input type="email" name="contact_email" value={formData.contactEmail} readOnly />
+        <input type="text" name="project_type" value={formData.projectType} readOnly />
+        <input type="text" name="features" value={formData.features.join(", ")} readOnly />
+        <input type="text" name="existing_tools" value={formData.existingTools.join(", ")} readOnly />
+        <input type="text" name="example_websites" value={formData.exampleWebsites} readOnly />
+        <input type="text" name="style_preference" value={formData.stylePreference} readOnly />
+        <input type="text" name="content_ready" value={formData.hasContent} readOnly />
+        <input type="text" name="budget_range" value={formData.budgetRange} readOnly />
+        <input type="text" name="desired_launch_date" value={formData.desiredLaunchDate} readOnly />
+        <input type="text" name="deadline" value={formData.deadline} readOnly />
+        <textarea name="notes" readOnly>{formData.notes}</textarea>
+      </form>
+
       {/* Progress bar */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-3">
@@ -612,15 +546,10 @@ export default function ProjectBriefForm() {
 
         <button
           onClick={handleNext}
-          disabled={isSubmitting || !validateStep()}
+          disabled={!validateStep()}
           className="btn-accent flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isSubmitting ? (
-            <>
-              <Loader2 className="animate-spin" size={18} />
-              Sending...
-            </>
-          ) : currentStep === STEPS.length - 1 ? (
+          {currentStep === STEPS.length - 1 ? (
             <>
               Submit & Get My Proposal
               <MessageCircle size={18} />
@@ -634,19 +563,5 @@ export default function ProjectBriefForm() {
         </button>
       </div>
     </div>
-
-    {/* Thank You Popup */}
-    <ThankYouPopup
-      isOpen={showThankYouPopup}
-      onClose={() => setShowThankYouPopup(false)}
-      name={formData.contactName}
-      message="Your project brief has been received! I'll review everything and send you a personalized proposal with pricing and timeline within 24 hours."
-      steps={[
-        { step: "1", text: "I review your project requirements" },
-        { step: "2", text: "I prepare a custom proposal with pricing" },
-        { step: "3", text: "I email your proposal within 24 hours" },
-      ]}
-    />
-    </>
   );
 }
