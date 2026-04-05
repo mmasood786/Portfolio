@@ -4,6 +4,10 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { Search, CheckCircle, AlertCircle, Loader2, Sparkles, Tag } from "lucide-react";
+<<<<<<< HEAD
+=======
+import ThankYouPopup from "./ThankYouPopup";
+>>>>>>> 9746ec8 (add a netlify form functionality)
 
 const offers = {
   "from-scratch": {
@@ -24,6 +28,10 @@ export default function AuditForm() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [selectedOffer, setSelectedOffer] = useState<string | null>(null);
+<<<<<<< HEAD
+=======
+  const [showThankYouPopup, setShowThankYouPopup] = useState(false);
+>>>>>>> 9746ec8 (add a netlify form functionality)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -58,6 +66,7 @@ export default function AuditForm() {
     setError("");
 
     try {
+<<<<<<< HEAD
       const response = await fetch("/api/audit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -65,13 +74,38 @@ export default function AuditForm() {
           ...formData,
           selectedOffer: selectedOffer ? offers[selectedOffer as keyof typeof offers].name : null,
         }),
+=======
+      // Encode form data for Netlify Forms
+      const formDataObj = new FormData();
+      formDataObj.append("form-name", "audit-form");
+      formDataObj.append("name", formData.name);
+      formDataObj.append("email", formData.email);
+      formDataObj.append("website", formData.website || "");
+      formDataObj.append("business_type", formData.businessType);
+      formDataObj.append("message", formData.message || "");
+      if (selectedOffer) {
+        formDataObj.append("selected_offer", offers[selectedOffer as keyof typeof offers].name);
+      }
+
+      // Submit to Netlify Forms
+      const response = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(formDataObj as any).toString(),
+>>>>>>> 9746ec8 (add a netlify form functionality)
       });
 
       if (!response.ok) {
         throw new Error("Something went wrong. Please try again.");
       }
 
+<<<<<<< HEAD
       setIsSubmitted(true);
+=======
+      // Show thank you popup
+      setIsSubmitted(true);
+      setShowThankYouPopup(true);
+>>>>>>> 9746ec8 (add a netlify form functionality)
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -80,6 +114,10 @@ export default function AuditForm() {
   };
 
   return (
+<<<<<<< HEAD
+=======
+    <>
+>>>>>>> 9746ec8 (add a netlify form functionality)
     <section
       id="audit"
       className="py-32 bg-surface-950 relative"
@@ -266,7 +304,23 @@ export default function AuditForm() {
                       </div>
                     )}
 
+<<<<<<< HEAD
                     <form onSubmit={handleSubmit} className="space-y-5">
+=======
+                    <form
+                      onSubmit={handleSubmit}
+                      className="space-y-5"
+                      name="audit-form"
+                      method="POST"
+                      data-netlify="true"
+                      data-netlify-honeypot="bot-field"
+                      action="/success"
+                    >
+                      {/* Hidden field for Netlify Forms */}
+                      <input type="hidden" name="form-name" value="audit-form" />
+                      <input type="hidden" name="bot-field" />
+
+>>>>>>> 9746ec8 (add a netlify form functionality)
                       <div>
                         <label className="block text-surface-300 font-medium mb-2">
                           Your Name *
@@ -379,5 +433,17 @@ export default function AuditForm() {
         </div>
       </div>
     </section>
+<<<<<<< HEAD
+=======
+
+    {/* Thank You Popup */}
+    <ThankYouPopup
+      isOpen={showThankYouPopup}
+      onClose={() => setShowThankYouPopup(false)}
+      name={formData.name}
+      formType="audit"
+    />
+    </>
+>>>>>>> 9746ec8 (add a netlify form functionality)
   );
 }

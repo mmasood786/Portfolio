@@ -2,14 +2,64 @@
 
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
+<<<<<<< HEAD
 import { useRef } from "react";
 import { Mail, MessageCircle, Clock, MapPin, Send, Phone } from "lucide-react";
+=======
+import { useRef, useState } from "react";
+import { Mail, MessageCircle, Clock, MapPin, Send, Phone, CheckCircle, Loader2 } from "lucide-react";
+import ThankYouPopup from "./ThankYouPopup";
+>>>>>>> 9746ec8 (add a netlify form functionality)
 
 export default function Contact() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+<<<<<<< HEAD
 
   return (
+=======
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [showThankYouPopup, setShowThankYouPopup] = useState(false);
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      // Encode form data for Netlify Forms
+      const formDataObj = new URLSearchParams();
+      formDataObj.append("form-name", "contact-form");
+      formDataObj.append("name", formData.name);
+      formDataObj.append("email", formData.email);
+      formDataObj.append("message", formData.message);
+
+      // Submit to Netlify Forms
+      await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formDataObj.toString(),
+      });
+
+      // Show thank you popup
+      setIsSubmitted(true);
+      setShowThankYouPopup(true);
+      setFormData({ name: "", email: "", message: "" });
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <>
+>>>>>>> 9746ec8 (add a netlify form functionality)
     <section id="contact" className="py-32 bg-surface-950 relative" ref={ref}>
       {/* Background glow */}
       <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-gradient-to-tl from-primary-600/10 to-transparent rounded-full blur-[140px]" />
@@ -138,35 +188,95 @@ export default function Contact() {
                   personalized suggestions for your website.
                 </p>
 
+<<<<<<< HEAD
                 <form className="space-y-5">
                   <div>
                     <input
                       type="text"
                       placeholder="Your Name"
+=======
+                <form
+                  onSubmit={handleSubmit}
+                  className="space-y-5"
+                  name="contact-form"
+                  method="POST"
+                  data-netlify="true"
+                  data-netlify-honeypot="bot-field"
+                  action="/success"
+                >
+                  {/* Hidden field for Netlify Forms */}
+                  <input type="hidden" name="form-name" value="contact-form" />
+                  <input type="hidden" name="bot-field" />
+
+                  <div>
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="Your Name"
+                      required
+>>>>>>> 9746ec8 (add a netlify form functionality)
                       className="w-full px-5 py-4 rounded-xl bg-surface-800/50 border border-surface-700 placeholder-surface-500 text-white focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
                     />
                   </div>
                   <div>
                     <input
                       type="email"
+<<<<<<< HEAD
                       placeholder="Your Email"
+=======
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="Your Email"
+                      required
+>>>>>>> 9746ec8 (add a netlify form functionality)
                       className="w-full px-5 py-4 rounded-xl bg-surface-800/50 border border-surface-700 placeholder-surface-500 text-white focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
                     />
                   </div>
                   <div>
                     <textarea
+<<<<<<< HEAD
                       placeholder="Tell me about your website or what you need help with..."
                       rows={4}
+=======
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      placeholder="Tell me about your website or what you need help with..."
+                      rows={4}
+                      required
+>>>>>>> 9746ec8 (add a netlify form functionality)
                       className="w-full px-5 py-4 rounded-xl bg-surface-800/50 border border-surface-700 placeholder-surface-500 text-white focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all resize-none"
                     />
                   </div>
                   <motion.button
+<<<<<<< HEAD
                     type="button"
                     className="w-full btn-accent flex items-center justify-center gap-2"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
                     Send Message <Send size={20} />
+=======
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full btn-accent flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                    whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+                    whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="animate-spin" size={20} />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        Send Message <Send size={20} />
+                      </>
+                    )}
+>>>>>>> 9746ec8 (add a netlify form functionality)
                   </motion.button>
                 </form>
 
@@ -185,5 +295,17 @@ export default function Contact() {
         </div>
       </div>
     </section>
+<<<<<<< HEAD
+=======
+
+    {/* Thank You Popup */}
+    <ThankYouPopup
+      isOpen={showThankYouPopup}
+      onClose={() => setShowThankYouPopup(false)}
+      name={formData.name || "there"}
+      formType="audit"
+    />
+    </>
+>>>>>>> 9746ec8 (add a netlify form functionality)
   );
 }

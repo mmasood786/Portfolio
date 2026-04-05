@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+# Portfolio
+=======
+>>>>>>> 9746ec8 (add a netlify form functionality)
 # WebCraft Pro - Professional Portfolio Website
 
 A high-converting, modern portfolio website for a freelance web developer with 6 years of experience. Built with **Next.js**, **FastAPI**, and **PostgreSQL**.
@@ -263,4 +269,9 @@ This project is proprietary. All rights reserved.
 
 ---
 
+<<<<<<< HEAD
 **Built with ❤️ for local businesses that deserve great websites**
+=======
+**Built with ❤️ for local businesses that deserve great websites**
+>>>>>>> ab22031 (Add a portfolio)
+>>>>>>> 9746ec8 (add a netlify form functionality)

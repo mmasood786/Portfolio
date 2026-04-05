@@ -14,6 +14,10 @@ import {
   AlertCircle,
   MessageCircle,
 } from "lucide-react";
+<<<<<<< HEAD
+=======
+import ThankYouPopup from "./ThankYouPopup";
+>>>>>>> 9746ec8 (add a netlify form functionality)
 
 // Simple feature list in plain language
 const FEATURES = [
@@ -61,6 +65,10 @@ export default function ProjectBriefForm() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+<<<<<<< HEAD
+=======
+  const [showThankYouPopup, setShowThankYouPopup] = useState(false);
+>>>>>>> 9746ec8 (add a netlify form functionality)
   const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
@@ -138,6 +146,7 @@ export default function ProjectBriefForm() {
     setError("");
 
     try {
+<<<<<<< HEAD
       const response = await fetch("/api/project-brief", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -165,6 +174,32 @@ export default function ProjectBriefForm() {
           deadlineDetails: formData.deadline,
           additionalNotes: formData.notes,
         }),
+=======
+      // Prepare form data for Netlify Forms
+      const formDataObj = new URLSearchParams();
+      formDataObj.append("form-name", "project-brief-form");
+      formDataObj.append("business_name", formData.businessName);
+      formDataObj.append("industry", formData.industry);
+      formDataObj.append("current_website", formData.currentWebsite || "");
+      formDataObj.append("contact_name", formData.contactName);
+      formDataObj.append("contact_email", formData.contactEmail);
+      formDataObj.append("project_type", formData.projectType);
+      formDataObj.append("features", formData.features.join(", "));
+      formDataObj.append("existing_tools", formData.existingTools.join(", "));
+      formDataObj.append("example_websites", formData.exampleWebsites || "");
+      formDataObj.append("style_preference", formData.stylePreference || "");
+      formDataObj.append("content_ready", formData.hasContent || "");
+      formDataObj.append("budget_range", formData.budgetRange);
+      formDataObj.append("desired_launch_date", formData.desiredLaunchDate || "");
+      formDataObj.append("deadline", formData.deadline || "");
+      formDataObj.append("notes", formData.notes || "");
+
+      // Submit to Netlify Forms
+      const response = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formDataObj.toString(),
+>>>>>>> 9746ec8 (add a netlify form functionality)
       });
 
       if (!response.ok) {
@@ -172,7 +207,13 @@ export default function ProjectBriefForm() {
         throw new Error(data.error || "Something went wrong");
       }
 
+<<<<<<< HEAD
       setIsSubmitted(true);
+=======
+      // Show thank you popup
+      setIsSubmitted(true);
+      setShowThankYouPopup(true);
+>>>>>>> 9746ec8 (add a netlify form functionality)
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -231,7 +272,21 @@ export default function ProjectBriefForm() {
   }
 
   return (
+<<<<<<< HEAD
     <div>
+=======
+    <>
+    <div>
+      {/* Hidden Netlify Form Declaration */}
+      <form name="project-brief-form" data-netlify="true" data-netlify-honeypot="bot-field" className="hidden">
+        <input type="hidden" name="form-name" value="project-brief-form" />
+        <input type="hidden" name="bot-field" />
+        <input type="text" name="business_name" />
+        <input type="email" name="contact_email" />
+        <textarea name="notes" />
+      </form>
+
+>>>>>>> 9746ec8 (add a netlify form functionality)
       {/* Progress bar */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-3">
@@ -636,5 +691,17 @@ export default function ProjectBriefForm() {
         </button>
       </div>
     </div>
+<<<<<<< HEAD
+=======
+
+    {/* Thank You Popup */}
+    <ThankYouPopup
+      isOpen={showThankYouPopup}
+      onClose={() => setShowThankYouPopup(false)}
+      name={formData.contactName}
+      formType="project"
+    />
+    </>
+>>>>>>> 9746ec8 (add a netlify form functionality)
   );
 }
