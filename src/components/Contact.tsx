@@ -4,14 +4,11 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { Mail, MessageCircle, Clock, MapPin, Send, Loader2 } from "lucide-react";
-import ThankYouPopup from "./ThankYouPopup";
 
 export default function Contact() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [showThankYouPopup, setShowThankYouPopup] = useState(false);
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -35,8 +32,7 @@ export default function Contact() {
         body: formDataObj.toString(),
       });
 
-      setIsSubmitted(true);
-      setShowThankYouPopup(true);
+      alert("Message sent! I'll get back to you within 24 hours.");
       setFormData({ name: "", email: "", message: "" });
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -46,7 +42,6 @@ export default function Contact() {
   };
 
   return (
-    <>
     <section id="contact" className="py-32 bg-surface-950 relative" ref={ref}>
       {/* Background glow */}
       <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-gradient-to-tl from-primary-600/10 to-transparent rounded-full blur-[140px]" />
@@ -253,14 +248,5 @@ export default function Contact() {
         </div>
       </div>
     </section>
-
-    {/* Thank You Popup */}
-    <ThankYouPopup
-      isOpen={showThankYouPopup}
-      onClose={() => setShowThankYouPopup(false)}
-      name={formData.name || "there"}
-      formType="audit"
-    />
-    </>
   );
 }

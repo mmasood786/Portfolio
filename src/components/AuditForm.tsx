@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { Search, CheckCircle, AlertCircle, Loader2, Sparkles, Tag } from "lucide-react";
-import ThankYouPopup from "./ThankYouPopup";
 
 const offers = {
   "from-scratch": {
@@ -25,7 +24,6 @@ export default function AuditForm() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [selectedOffer, setSelectedOffer] = useState<string | null>(null);
-  const [showThankYouPopup, setShowThankYouPopup] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -82,7 +80,6 @@ export default function AuditForm() {
       }
 
       setIsSubmitted(true);
-      setShowThankYouPopup(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -91,7 +88,6 @@ export default function AuditForm() {
   };
 
   return (
-    <>
     <section
       id="audit"
       className="py-32 bg-surface-950 relative"
@@ -400,14 +396,5 @@ export default function AuditForm() {
         </div>
       </div>
     </section>
-
-    {/* Thank You Popup */}
-    <ThankYouPopup
-      isOpen={showThankYouPopup}
-      onClose={() => setShowThankYouPopup(false)}
-      name={formData.name}
-      formType="audit"
-    />
-    </>
   );
 }

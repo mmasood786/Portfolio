@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Netlify Forms</title>
+</head>
+<body>
+  <!-- Contact Form -->
+  <form name="contact-form" netlify netlify-honeypot="bot-field" hidden>
+    <input type="hidden" name="form-name" value="contact-form" />
+    <input type="hidden" name="bot-field" />
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <textarea name="message"></textarea>
+  </form>
+
+  <!-- Audit Form -->
+  <form name="audit-form" netlify netlify-honeypot="bot-field" hidden>
+    <input type="hidden" name="form-name" value="audit-form" />
+    <input type="hidden" name="bot-field" />
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <input type="url" name="website" />
+    <input type="text" name="business_type" />
+    <textarea name="message"></textarea>
+    <input type="text" name="selected_offer" />
+  </form>
+
+  <!-- Project Brief Form -->
+  <form name="project-brief-form" netlify netlify-honeypot="bot-field" hidden>
+    <input type="hidden" name="form-name" value="project-brief-form" />
+    <input type="hidden" name="bot-field" />
+    <input type="text" name="business_name" />
+    <input type="text" name="industry" />
+    <input type="url" name="current_website" />
+    <input type="text" name="contact_name" />
+    <input type="email" name="contact_email" />
+    <input type="text" name="project_type" />
+    <input type="text" name="features" />
+    <input type="text" name="existing_tools" />
+    <input type="text" name="example_websites" />
+    <input type="text" name="style_preference" />
+    <input type="text" name="content_ready" />
+    <input type="text" name="budget_range" />
+    <input type="text" name="desired_launch_date" />
+    <input type="text" name="deadline" />
+    <textarea name="notes"></textarea>
+  </form>
+</body>
+</html>

@@ -1,13 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { X, Sparkles, Clock, ArrowRight } from "lucide-react";
 
 export default function TopBanner() {
+  const [isMounted, setIsMounted] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     const dismissedAt = localStorage.getItem("banner-dismissed");
     if (dismissedAt) {
       const elapsed = Date.now() - parseInt(dismissedAt, 10);
@@ -21,13 +23,13 @@ export default function TopBanner() {
     }
   }, []);
 
+  if (!isMounted || !isVisible) return null;
+
   const handleDismiss = () => {
     setIsVisible(false);
     const dismissTime = Date.now();
     localStorage.setItem("banner-dismissed", dismissTime.toString());
   };
-
-  if (!isVisible) return null;
 
   return (
     <motion.div
@@ -135,8 +137,10 @@ export default function TopBanner() {
 // Lightweight countdown timer (only shows days)
 function CountdownTimer() {
   const [daysLeft, setDaysLeft] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     const calculateDaysLeft = () => {
       const now = new Date();
       const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
@@ -145,10 +149,9 @@ function CountdownTimer() {
     };
 
     calculateDaysLeft();
-    // Update once per day (no need for seconds on banner)
     const interval = setInterval(calculateDaysLeft, 24 * 60 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
 
-  return <span className="font-bold">{daysLeft} days left</span>;
+  return <span className="font-bold">{isMounted ? daysLeft : "--"}</span>;
 }

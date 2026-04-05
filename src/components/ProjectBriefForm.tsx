@@ -14,7 +14,6 @@ import {
   AlertCircle,
   MessageCircle,
 } from "lucide-react";
-import ThankYouPopup from "./ThankYouPopup";
 
 // Simple feature list in plain language
 const FEATURES = [
@@ -62,7 +61,6 @@ export default function ProjectBriefForm() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [showThankYouPopup, setShowThankYouPopup] = useState(false);
   const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
@@ -169,7 +167,6 @@ export default function ProjectBriefForm() {
       }
 
       setIsSubmitted(true);
-      setShowThankYouPopup(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -228,17 +225,7 @@ export default function ProjectBriefForm() {
   }
 
   return (
-    <>
     <div>
-      {/* Hidden Netlify Form Declaration */}
-      <form name="project-brief-form" data-netlify="true" data-netlify-honeypot="bot-field" className="hidden">
-        <input type="hidden" name="form-name" value="project-brief-form" />
-        <input type="hidden" name="bot-field" />
-        <input type="text" name="business_name" />
-        <input type="email" name="contact_email" />
-        <textarea name="notes" />
-      </form>
-
       {/* Progress bar */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-3">
@@ -643,14 +630,5 @@ export default function ProjectBriefForm() {
         </button>
       </div>
     </div>
-
-    {/* Thank You Popup */}
-    <ThankYouPopup
-      isOpen={showThankYouPopup}
-      onClose={() => setShowThankYouPopup(false)}
-      name={formData.contactName}
-      formType="project"
-    />
-    </>
   );
 }
