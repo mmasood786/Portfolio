@@ -32,7 +32,6 @@ export default function Contact() {
         body: formDataObj.toString(),
       });
 
-      alert("Message sent! I'll get back to you within 24 hours.");
       setFormData({ name: "", email: "", message: "" });
     } catch (error) {
       console.error("Error submitting form:", error);
