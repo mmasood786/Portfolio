@@ -174,7 +174,6 @@ export default function Contact() {
                   onSubmit={handleSubmit}
                   className="space-y-5"
                   name="contact-form"
-                  method="POST"
                   data-netlify="true"
                   data-netlify-honeypot="bot-field"
                 >
