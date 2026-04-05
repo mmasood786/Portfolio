@@ -50,7 +50,6 @@ export default function Navbar() {
     <>
       {/* Top Banner - Appears on all pages */}
       <TopBanner />
-
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
