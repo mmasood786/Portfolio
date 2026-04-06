@@ -8,26 +8,40 @@ import { ArrowRight, Sparkles, TrendingUp, Users, Clock, MousePointer2, Star, Za
 // INTERACTIVE PARTICLE SYSTEM
 // ============================================
 function InteractiveParticles({ mousePosition }: { mousePosition: { x: number; y: number } }) {
-  // Reduce particles on mobile for better performance
-  const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [particles, setParticles] = useState<Array<{ id: number; baseX: number; baseY: number; size: number; speed: number }>>([]);
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+    setMounted(true);
+    const count = window.innerWidth < 768 ? 20 : 50;
+    setParticles(
+      Array.from({ length: count }, (_, i) => ({
+        id: i,
+        baseX: Math.random() * 100,
+        baseY: Math.random() * 100,
+        size: Math.random() * 3 + 1,
+        speed: Math.random() * 0.5 + 0.5,
+      }))
+    );
+
+    const handleResize = () => {
+      const newCount = window.innerWidth < 768 ? 20 : 50;
+      setParticles(
+        Array.from({ length: newCount }, (_, i) => ({
+          id: i,
+          baseX: Math.random() * 100,
+          baseY: Math.random() * 100,
+          size: Math.random() * 3 + 1,
+          speed: Math.random() * 0.5 + 0.5,
+        }))
+      );
     };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const particleCount = isMobile ? 20 : 50;
-  const particles = Array.from({ length: particleCount }, (_, i) => ({
-    id: i,
-    baseX: Math.random() * 100,
-    baseY: Math.random() * 100,
-    size: Math.random() * 3 + 1,
-    speed: Math.random() * 0.5 + 0.5,
-  }));
+  if (!mounted || particles.length === 0) return null;
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">

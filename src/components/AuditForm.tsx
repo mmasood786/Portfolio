@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Search, CheckCircle, Sparkles, Tag } from "lucide-react";
+import { Search, CheckCircle, Sparkles, Tag, Loader2 } from "lucide-react";
 
 const offers = {
   "from-scratch": {
@@ -31,6 +31,11 @@ export default function AuditForm() {
     businessType: "",
     message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    success: boolean;
+    message: string;
+  } | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -40,6 +45,40 @@ export default function AuditForm() {
 
   const handleSelectOffer = (offerId: string) => {
     setSelectedOffer(selectedOffer === offerId ? null : offerId);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      const response = await fetch("/api/audit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          selectedOffer: selectedOffer ? offers[selectedOffer as keyof typeof offers].name : null,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setSubmitStatus({ success: true, message: result.message });
+        setFormData({ name: "", email: "", website: "", businessType: "", message: "" });
+        setSelectedOffer(null);
+      } else {
+        setSubmitStatus({ success: false, message: result.message });
+      }
+    } catch (error) {
+      setSubmitStatus({
+        success: false,
+        message: "Failed to submit. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -156,14 +195,23 @@ export default function AuditForm() {
                 )}
 
                 <form
+                  onSubmit={handleSubmit}
                   className="space-y-5"
-                  name="audit-form"
-                  method="POST"
-                  action="/success?form=audit"
                 >
-                  <input type="hidden" name="form-name" value="audit-form" />
-                  <input type="hidden" name="bot-field" />
-                  {selectedOffer && <input type="hidden" name="selected_offer" value={offers[selectedOffer as keyof typeof offers].name} />}
+                  {submitStatus && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className={`p-4 rounded-xl border ${
+                        submitStatus.success
+                          ? "bg-green-500/10 border-green-500/30 text-green-400"
+                          : "bg-red-500/10 border-red-500/30 text-red-400"
+                      }`}
+                    >
+                      {submitStatus.message}
+                    </motion.div>
+                  )}
+
                   <div>
                     <label className="block text-surface-300 font-medium mb-2">Your Name *</label>
                     <input type="text" name="name" value={formData.name} onChange={handleChange} required className="w-full px-5 py-4 rounded-xl bg-surface-800/50 border border-surface-700 text-white placeholder-surface-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all" placeholder="John Smith" />
@@ -194,8 +242,23 @@ export default function AuditForm() {
                     <label className="block text-surface-300 font-medium mb-2">What's your biggest challenge right now? (optional)</label>
                     <textarea name="message" value={formData.message} onChange={handleChange} rows={3} className="w-full px-5 py-4 rounded-xl bg-surface-800/50 border border-surface-700 text-white placeholder-surface-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all resize-none" placeholder="e.g., Not getting enough inquiries, website looks outdated..." />
                   </div>
-                  <motion.button type="submit" className="w-full btn-accent text-lg flex items-center justify-center gap-2" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                    Get My Free Audit <Search size={20} />
+                  <motion.button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full btn-accent text-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="animate-spin" size={20} />
+                        Submitting...
+                      </>
+                    ) : (
+                      <>
+                        Get My Free Audit <Search size={20} />
+                      </>
+                    )}
                   </motion.button>
                   <p className="text-surface-500 text-sm text-center">No spam, no obligations. Just a free, honest review of your website.</p>
                 </form>

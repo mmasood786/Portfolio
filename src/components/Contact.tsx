@@ -2,12 +2,58 @@
 
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef } from "react";
-import { Mail, MessageCircle, Clock, MapPin, Send } from "lucide-react";
+import { useRef, useState } from "react";
+import { Mail, MessageCircle, Clock, MapPin, Send, Loader2 } from "lucide-react";
 
 export default function Contact() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    success: boolean;
+    message: string;
+  } | null>(null);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setSubmitStatus({ success: true, message: result.message });
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        setSubmitStatus({ success: false, message: result.message });
+      }
+    } catch (error) {
+      setSubmitStatus({
+        success: false,
+        message: "Failed to send message. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <section id="contact" className="py-32 bg-surface-950 relative" ref={ref}>
@@ -139,17 +185,29 @@ export default function Contact() {
                 </p>
 
                 <form
+                  onSubmit={handleSubmit}
                   className="space-y-5"
-                  name="contact-form"
-                  method="POST"
-                  action="/success?form=contact"
                 >
-                  <input type="hidden" name="form-name" value="contact-form" />
-                  <input type="hidden" name="bot-field" />
+                  {submitStatus && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className={`p-4 rounded-xl border ${
+                        submitStatus.success
+                          ? "bg-green-500/10 border-green-500/30 text-green-400"
+                          : "bg-red-500/10 border-red-500/30 text-red-400"
+                      }`}
+                    >
+                      {submitStatus.message}
+                    </motion.div>
+                  )}
+
                   <div>
                     <input
                       type="text"
                       name="name"
+                      value={formData.name}
+                      onChange={handleChange}
                       placeholder="Your Name"
                       required
                       className="w-full px-5 py-4 rounded-xl bg-surface-800/50 border border-surface-700 placeholder-surface-500 text-white focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
@@ -159,6 +217,8 @@ export default function Contact() {
                     <input
                       type="email"
                       name="email"
+                      value={formData.email}
+                      onChange={handleChange}
                       placeholder="Your Email"
                       required
                       className="w-full px-5 py-4 rounded-xl bg-surface-800/50 border border-surface-700 placeholder-surface-500 text-white focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
@@ -167,6 +227,8 @@ export default function Contact() {
                   <div>
                     <textarea
                       name="message"
+                      value={formData.message}
+                      onChange={handleChange}
                       placeholder="Tell me about your website or what you need help with..."
                       rows={4}
                       required
@@ -175,11 +237,21 @@ export default function Contact() {
                   </div>
                   <motion.button
                     type="submit"
-                    className="w-full btn-accent flex items-center justify-center gap-2"
+                    disabled={isSubmitting}
+                    className="w-full btn-accent flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    Send Message <Send size={20} />
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="animate-spin" size={20} />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        Send Message <Send size={20} />
+                      </>
+                    )}
                   </motion.button>
                 </form>
 

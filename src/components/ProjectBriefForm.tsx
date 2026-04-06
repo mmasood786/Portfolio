@@ -11,6 +11,8 @@ import {
   DollarSign,
   AlertCircle,
   MessageCircle,
+  Loader2,
+  CheckCircle,
 } from "lucide-react";
 
 // Simple feature list in plain language
@@ -58,6 +60,11 @@ const STEPS = [
 export default function ProjectBriefForm() {
   const [currentStep, setCurrentStep] = useState(0);
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    success: boolean;
+    message: string;
+  } | null>(null);
 
   const [formData, setFormData] = useState({
     // Step 1: About You
@@ -129,11 +136,34 @@ export default function ProjectBriefForm() {
     }
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (!validateStep()) return;
+    
     if (currentStep === STEPS.length - 1) {
-      const form = document.getElementById("project-brief-form") as HTMLFormElement;
-      if (form) form.submit();
+      // Final step - submit to API
+      setIsSubmitting(true);
+      setError("");
+      setSubmitStatus(null);
+
+      try {
+        const response = await fetch("/api/project-brief", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          setSubmitStatus({ success: true, message: result.message });
+        } else {
+          setError(result.message);
+        }
+      } catch (error) {
+        setError("Failed to submit. Please try again.");
+      } finally {
+        setIsSubmitting(false);
+      }
     } else {
       nextStep();
     }
@@ -143,27 +173,6 @@ export default function ProjectBriefForm() {
 
   return (
     <div>
-      {/* Hidden form for Netlify detection */}
-      <form id="project-brief-form" name="project-brief-form" method="POST" action="/success?form=project" className="hidden" data-netlify="true" data-netlify-honeypot="bot-field">
-        <input type="hidden" name="form-name" value="project-brief-form" />
-        <input type="hidden" name="bot-field" />
-        <input type="text" name="business_name" value={formData.businessName} readOnly />
-        <input type="text" name="industry" value={formData.industry} readOnly />
-        <input type="url" name="current_website" value={formData.currentWebsite} readOnly />
-        <input type="text" name="contact_name" value={formData.contactName} readOnly />
-        <input type="email" name="contact_email" value={formData.contactEmail} readOnly />
-        <input type="text" name="project_type" value={formData.projectType} readOnly />
-        <input type="text" name="features" value={formData.features.join(", ")} readOnly />
-        <input type="text" name="existing_tools" value={formData.existingTools.join(", ")} readOnly />
-        <input type="text" name="example_websites" value={formData.exampleWebsites} readOnly />
-        <input type="text" name="style_preference" value={formData.stylePreference} readOnly />
-        <input type="text" name="content_ready" value={formData.hasContent} readOnly />
-        <input type="text" name="budget_range" value={formData.budgetRange} readOnly />
-        <input type="text" name="desired_launch_date" value={formData.desiredLaunchDate} readOnly />
-        <input type="text" name="deadline" value={formData.deadline} readOnly />
-        <textarea name="notes" readOnly>{formData.notes}</textarea>
-      </form>
-
       {/* Progress bar */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-3">
@@ -190,6 +199,46 @@ export default function ProjectBriefForm() {
           <AlertCircle className="text-red-400 flex-shrink-0" size={20} />
           <span className="text-red-400">{error}</span>
         </div>
+      )}
+
+      {/* Success message */}
+      {submitStatus?.success && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-green-500/10 border border-green-500/20 rounded-xl p-4 mb-6 flex items-start gap-3"
+        >
+          <CheckCircle className="text-green-400 flex-shrink-0 mt-0.5" size={20} />
+          <div>
+            <p className="text-green-400 font-medium">{submitStatus.message}</p>
+            <button
+              onClick={() => {
+                setSubmitStatus(null);
+                setCurrentStep(0);
+                setFormData({
+                  businessName: "",
+                  industry: "",
+                  currentWebsite: "",
+                  contactName: "",
+                  contactEmail: "",
+                  projectType: "",
+                  features: [],
+                  existingTools: [],
+                  notes: "",
+                  exampleWebsites: "",
+                  stylePreference: "",
+                  hasContent: "",
+                  budgetRange: "",
+                  desiredLaunchDate: "",
+                  deadline: "",
+                });
+              }}
+              className="text-green-400 underline text-sm mt-2 hover:text-green-300"
+            >
+              Submit another brief
+            </button>
+          </div>
+        </motion.div>
       )}
 
       {/* Form steps */}
@@ -546,10 +595,15 @@ export default function ProjectBriefForm() {
 
         <button
           onClick={handleNext}
-          disabled={!validateStep()}
+          disabled={!validateStep() || isSubmitting}
           className="btn-accent flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {currentStep === STEPS.length - 1 ? (
+          {isSubmitting ? (
+            <>
+              <Loader2 className="animate-spin" size={18} />
+              Submitting...
+            </>
+          ) : currentStep === STEPS.length - 1 ? (
             <>
               Submit & Get My Proposal
               <MessageCircle size={18} />
