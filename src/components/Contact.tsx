@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Mail, MessageCircle, Clock, MapPin, Send, Loader2 } from "lucide-react";
+import { Mail, MessageCircle, Clock, MapPin, Send, Loader2, Instagram } from "lucide-react";
 
 export default function Contact() {
   const ref = useRef(null);
@@ -89,24 +89,26 @@ export default function Contact() {
             transition={{ duration: 0.8 }}
             className="space-y-6"
           >
-            {/* Email */}
+            {/* Instagram */}
             <motion.a
-              href="mailto:hello@devstudio.com"
+              href="https://www.instagram.com/devstudio.hub/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-start gap-6 p-6 bg-card-gradient rounded-2xl border border-surface-700/50 card-hover group"
               whileHover={{ x: 8 }}
             >
-              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-neon-cyan to-primary-600 flex items-center justify-center flex-shrink-0 shadow-lg">
-                <Mail className="text-white" size={28} />
+              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center flex-shrink-0 shadow-lg">
+                <Instagram className="text-white" size={28} />
               </div>
               <div>
                 <h3 className="text-xl font-bold text-white mb-2">
-                  Email Me
+                  Follow on Instagram
                 </h3>
-                <p className="text-neon-cyan font-medium group-hover:underline">
-                  hello@devstudio.com
+                <p className="text-pink-400 font-medium group-hover:underline">
+                  @devstudio.hub
                 </p>
                 <p className="text-surface-400 mt-1">
-                  I respond within 24 hours, usually much sooner
+                  Check out my latest work and updates
                 </p>
               </div>
             </motion.a>
@@ -256,12 +258,14 @@ export default function Contact() {
                 </form>
 
                 <p className="text-surface-500 text-sm text-center mt-6">
-                  Or email me directly at{" "}
+                  Or follow me on Instagram{" "}
                   <a
-                    href="mailto:hello@devstudio.com"
-                    className="text-neon-cyan underline hover:text-primary-400"
+                    href="https://www.instagram.com/devstudio.hub/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-pink-400 underline hover:text-pink-300"
                   >
-                    hello@devstudio.com
+                    @devstudio.hub
                   </a>
                 </p>
               </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowUp, Mail, MessageCircle, Code } from "lucide-react";
+import { ArrowUp, Mail, MessageCircle, Code, Instagram } from "lucide-react";
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -52,6 +52,14 @@ export default function Footer() {
                 className="w-12 h-12 rounded-xl bg-surface-800 flex items-center justify-center hover:bg-primary-500/20 hover:border-primary-500/50 border border-surface-700 transition-all group"
               >
                 <Mail size={20} className="text-surface-400 group-hover:text-neon-cyan transition-colors" />
+              </a>
+              <a
+                href="https://www.instagram.com/devstudio.hub/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-12 h-12 rounded-xl bg-surface-800 flex items-center justify-center hover:bg-pink-500/20 hover:border-pink-500/50 border border-surface-700 transition-all group"
+              >
+                <Instagram size={20} className="text-surface-400 group-hover:text-pink-500 transition-colors" />
               </a>
               <a
                 href="https://wa.me/1234567890"

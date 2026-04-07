@@ -60,3 +60,8 @@ env/
 *.swp
 *.swo
 *~
+supabase-admin-migration.sql
+src/app/admin/page.tsx
+src/app/api/admin/data/route.ts
+src/app/api/admin/update-submission/route.ts
+CLIENT_ACQUISITION_GUIDE.md
