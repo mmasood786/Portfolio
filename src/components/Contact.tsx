@@ -258,14 +258,12 @@ export default function Contact() {
                 </form>
 
                 <p className="text-surface-500 text-sm text-center mt-6">
-                  Or follow me on Instagram{" "}
+                  Or email me directly at{" "}
                   <a
-                    href="https://www.instagram.com/devstudio.hub/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-pink-400 underline hover:text-pink-300"
+                    href="mailto:contact.devstudiohub@gmail.com"
+                    className="text-neon-cyan underline hover:text-cyan-300"
                   >
-                    @devstudio.hub
+                    contact.devstudiohub@gmail.com
                   </a>
                 </p>
               </div>

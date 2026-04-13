@@ -48,7 +48,7 @@ export default function Footer() {
             </p>
             <div className="flex gap-4">
               <a
-                href="mailto:hello@devstudio.com"
+                href="mailto:contact.devstudiohub@gmail.com"
                 className="w-12 h-12 rounded-xl bg-surface-800 flex items-center justify-center hover:bg-primary-500/20 hover:border-primary-500/50 border border-surface-700 transition-all group"
               >
                 <Mail size={20} className="text-surface-400 group-hover:text-neon-cyan transition-colors" />
